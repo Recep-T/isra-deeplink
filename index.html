@@ -4,35 +4,48 @@
     <title>Isra Dhikr Circle</title>
     <meta property="og:title" content="Join Dhikr Circle" />
     <meta property="og:description" content="You have been invited to a collective dhikr circle. Click to join." />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script>
         window.onload = function() {
-            // Get the ID from the URL (?id=XYZ)
             const urlParams = new URLSearchParams(window.location.search);
             const zikirId = urlParams.get('id');
 
             if (zikirId) {
-                // The custom protocol to open your app
                 const deepLink = "israapp://join?joinHalka=" + zikirId;
                 
-                // 1. Try to open the app directly
+                // Set the link on the manual button as a backup
+                document.getElementById('manual-link').href = deepLink;
+
+                // 1. Try to open the app
                 window.location.href = deepLink;
 
-                // 2. Fallback: If the app doesn't open within 2 seconds, go to App Store
-                setTimeout(function() {
+                // 2. Set the fallback timer
+                const fallback = setTimeout(function() {
                     window.location.href = "https://apps.apple.com/app/id6756538182";
-                }, 2000);
+                }, 3000);
+
+                // 3. IF THE APP OPENS: The window will lose focus. 
+                // We clear the timer so the App Store doesn't open in the background.
+                window.onblur = function() {
+                    clearTimeout(fallback);
+                };
             }
         };
     </script>
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f8fafc; color: #1e293b; }
-        .message { text-align: center; padding: 20px; }
+        body { font-family: -apple-system, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f8fafc; color: #1e293b; }
+        .card { text-align: center; padding: 30px; background: white; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); max-width: 300px; }
+        .btn { display: inline-block; margin-top: 20px; padding: 12px 25px; background-color: #4F46E5; color: white; text-decoration: none; border-radius: 12px; font-weight: bold; }
+        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #4F46E5; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; margin: 10px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
-    <div class="message">
-        <p>Redirecting to the app...</p>
-        <p style="font-size: 0.8em; color: #64748b;">If it doesn't open, please wait for the App Store.</p>
+    <div class="card">
+        <div class="loader"></div>
+        <p>Opening ISRA app...</p>
+        <a id="manual-link" href="#" class="btn">Join Circle Now</a>
+        <p style="font-size: 0.8em; color: #64748b; margin-top: 20px;">If you don't have the app, you will be redirected to the App Store.</p>
     </div>
 </body>
 </html>
