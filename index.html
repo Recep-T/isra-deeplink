@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Isra Dhikr Circle</title>
+    <meta property="og:title" content="Join Dhikr Circle" />
+    <meta property="og:description" content="You have been invited to a collective dhikr circle. Click to join." />
+    <script>
+        window.onload = function() {
+            // Get the ID from the URL (?id=XYZ)
+            const urlParams = new URLSearchParams(window.location.search);
+            const zikirId = urlParams.get('id');
+
+            if (zikirId) {
+                // The custom protocol to open your app
+                const deepLink = "israapp://join?joinHalka=" + zikirId;
+                
+                // 1. Try to open the app directly
+                window.location.href = deepLink;
+
+                // 2. Fallback: If the app doesn't open within 2 seconds, go to App Store
+                setTimeout(function() {
+                    window.location.href = "https://apps.apple.com/app/id6756538182";
+                }, 2000);
+            }
+        };
+    </script>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f8fafc; color: #1e293b; }
+        .message { text-align: center; padding: 20px; }
+    </style>
+</head>
+<body>
+    <div class="message">
+        <p>Redirecting to the app...</p>
+        <p style="font-size: 0.8em; color: #64748b;">If it doesn't open, please wait for the App Store.</p>
+    </div>
+</body>
+</html>
