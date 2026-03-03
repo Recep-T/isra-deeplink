@@ -1,35 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Isra Dhikr Circle</title>
-    <meta property="og:title" content="Join Dhikr Circle" />
-    <meta property="og:description" content="You have been invited to a collective dhikr circle. Click to join." />
+    <title>Isra - Join Circle</title>
+    <meta property="og:title" content="Join Isra Circle" />
+    <meta property="og:description" content="You have been invited to a collective circle. Click to join." />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script>
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
             const zikirId = urlParams.get('id');
+            const groupId = urlParams.get('group');
 
+            let deepLink = "israapp://join";
+
+            // Eğer linkte 'id' varsa Zikir linkidir
             if (zikirId) {
-                const deepLink = "israapp://join?joinHalka=" + zikirId;
-                
-                // Set the link on the manual button as a backup
-                document.getElementById('manual-link').href = deepLink;
-
-                // 1. Try to open the app
-                window.location.href = deepLink;
-
-                // 2. Set the fallback timer
-                const fallback = setTimeout(function() {
-                    window.location.href = "https://apps.apple.com/app/id6756538182";
-                }, 3000);
-
-                // 3. IF THE APP OPENS: The window will lose focus. 
-                // We clear the timer so the App Store doesn't open in the background.
-                window.onblur = function() {
-                    clearTimeout(fallback);
-                };
+                deepLink += "?joinHalka=" + zikirId;
+            } 
+            // Eğer linkte 'group' varsa Hatim linkidir
+            else if (groupId) {
+                deepLink += "?group=" + groupId;
             }
+
+            // Yedek butonu güncelle
+            document.getElementById('manual-link').href = deepLink;
+
+            // 1. Uygulamayı açmayı dene
+            window.location.href = deepLink;
+
+            // 2. Fallback: Uygulama yoksa App Store'a yönlendir
+            const fallback = setTimeout(function() {
+                window.location.href = "https://apps.apple.com/app/id6756538182";
+            }, 3000);
+
+            // 3. Uygulama açılırsa sayfa odağını kaybeder, App Store yönlendirmesini iptal et
+            window.onblur = function() {
+                clearTimeout(fallback);
+            };
         };
     </script>
     <style>
