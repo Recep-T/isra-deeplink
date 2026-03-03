@@ -8,16 +8,18 @@
     <script>
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
-            const zikirId = urlParams.get('id');
-            const groupId = urlParams.get('group');
+            
+            // Parametreleri al
+            const zikirId = urlParams.get('id');    // Kolektif Zikir için
+            const groupId = urlParams.get('group'); // Kolektif Hatim için
 
             let deepLink = "israapp://join";
 
-            // Eğer linkte 'id' varsa Zikir linkidir
+            // 1. Senaryo: Eğer linkte 'id' varsa (Zikir)
             if (zikirId) {
                 deepLink += "?joinHalka=" + zikirId;
             } 
-            // Eğer linkte 'group' varsa Hatim linkidir
+            // 2. Senaryo: Eğer linkte 'group' varsa (Hatim)
             else if (groupId) {
                 deepLink += "?group=" + groupId;
             }
@@ -25,34 +27,24 @@
             // Yedek butonu güncelle
             document.getElementById('manual-link').href = deepLink;
 
-            // 1. Uygulamayı açmayı dene
+            // Uygulamayı açmayı dene
             window.location.href = deepLink;
 
-            // 2. Fallback: Uygulama yoksa App Store'a yönlendir
+            // Fallback: Uygulama yoksa App Store'a yönlendir
             const fallback = setTimeout(function() {
                 window.location.href = "https://apps.apple.com/app/id6756538182";
             }, 3000);
 
-            // 3. Uygulama açılırsa sayfa odağını kaybeder, App Store yönlendirmesini iptal et
             window.onblur = function() {
                 clearTimeout(fallback);
             };
         };
     </script>
-    <style>
-        body { font-family: -apple-system, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f8fafc; color: #1e293b; }
-        .card { text-align: center; padding: 30px; background: white; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); max-width: 300px; }
-        .btn { display: inline-block; margin-top: 20px; padding: 12px 25px; background-color: #4F46E5; color: white; text-decoration: none; border-radius: 12px; font-weight: bold; }
-        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #4F46E5; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; margin: 10px auto; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    </style>
-</head>
+    </head>
 <body>
     <div class="card">
-        <div class="loader"></div>
         <p>Opening ISRA app...</p>
         <a id="manual-link" href="#" class="btn">Join Circle Now</a>
-        <p style="font-size: 0.8em; color: #64748b; margin-top: 20px;">If you don't have the app, you will be redirected to the App Store.</p>
     </div>
 </body>
 </html>
